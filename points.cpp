@@ -1,0 +1,59 @@
+#include<iostream>
+#include<set>
+#include<utility>
+#include<vector>
+#include<map>
+
+using namespace std;
+
+
+  struct Point {
+      int x;
+      int y;
+      Point() : x(0), y(0) {}
+      Point(int a, int b) : x(a), y(b) {}
+  };
+
+int maxPoints(vector<Point> &points) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        //15:43
+        map<pair<float,float>,set<int> >m;
+        map<int,set<int> > n;
+        for(int i=0;i<points.size();i++)
+        {
+            for(int j=i+1;j<points.size();j++)
+            {
+                float k,t;
+                if(points[i].x!=points[j].y)
+                {
+                    k=(points[i].y-points[j].y)/((float)(points[i].x-points[j].x));
+                    t=points[i].y-k*points[i].x;
+                    pair<float,float> p=make_pair(k,t);
+                    if(m.find(p)==m.end())
+                        m[p]=set<int>();
+                    m[p].insert(i);
+                    m[p].insert(j);
+                    
+                }
+                else
+                {
+                    if(n.find(points[i].x)==n.end())
+                        n[points[i].x]=set<int>();
+                    n[points[i].x].insert(i);
+                    n[points[i].x].insert(j);
+                }
+            }
+        }
+        int maxn=0;
+        for(map<pair<float,float>,set<int> >::iterator it=m.begin();it!=m.end();it++)
+            maxn=max(maxn,(int)it->second.size());
+        for(map<int,set<int> >::iterator it=n.begin();it!=n.end();it++)
+            maxn=max(maxn,(int)it->second.size());
+        return maxn;
+    }
+
+main()
+{
+
+}
