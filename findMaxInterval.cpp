@@ -1,0 +1,69 @@
+#include<iostream>
+#include<vector>
+
+using namespace std;
+
+int findMax(vector<int> start,vector<int> end, int max)
+{
+    if(start.size()<=max)
+        return max;
+    vector<int> lefts;
+    vector<int> lefte;
+    vector<int> rights;
+    vector<int> righte;
+    int largest=0;
+    for(int i=0;i<start.size();i++)
+    {
+        if(end[i]>largest)
+            largest=end[i];
+    }
+    int mid=(start[0]+largest)/2;
+    int count=0;
+    for(int i=0;i<start.size();i++)
+    {
+	cout<<start[i]<<" "<<end[i]<<endl;
+        if(start[i]>mid)
+        {
+            rights.push_back(start[i]);
+            righte.push_back(end[i]);
+        }
+        else if(end[i]<mid)
+        {
+            lefts.push_back(start[i]);
+            lefte.push_back(end[i]);
+        }
+        else
+        {
+            count++;
+            if(start[i]<mid)
+            {
+                lefts.push_back(start[i]);
+                lefte.push_back(mid-1);
+            }
+            if(end[i]>mid)
+            {
+                rights.push_back(mid+1);
+                righte.push_back(end[i]);
+            }
+        }
+        if(count>max)
+            max=count;
+    }
+    count=findMax(lefts,lefte,max);
+        if(count>max)
+            max=count;
+    count=findMax(rights,righte,max);
+        if(count>max)
+            max=count;
+    return max;
+}
+
+main()
+{
+	int a[]={-111,3,4,5,6,7,9};
+	int b[]={9 ,  14,6,5,8,9,10};
+	vector<int> A(a,a+7);
+	vector<int> B(b,b+7);
+	cout<<findMax(A,B,0)<<endl;
+}
+
